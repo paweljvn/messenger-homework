@@ -12,8 +12,19 @@ import java.awt.*;
 import java.util.Optional;
 import java.util.Scanner;
 
+import static view.ApplicationMain.Action.*;
+
 public class ApplicationMain {
     public final static String NULL = null;
+
+    public enum Action {
+        ADD,
+        REMOVE,
+        DISPLAY_ALL_MESSAGES,
+        SEARCH_BY_TITLE,
+        SEARCH_BY_AUTHOR,
+        CLOSE,
+    }
 
 
     public static void main(String[] args) {
@@ -38,7 +49,6 @@ public class ApplicationMain {
 
             final int selectedAction = scanner.nextInt();
 
-            final Optional<Desktop.Action> action = Action.fromActionIndex(selectedAction);
 
             if (action.isPresent()) {
                 switch (action.get()) {
