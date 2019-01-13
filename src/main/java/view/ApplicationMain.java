@@ -1,7 +1,8 @@
 package view;
 
 import dao.SimpleStorage;
-import service.MessageService;
+import model.Message;
+
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -65,13 +66,13 @@ public class ApplicationMain {
                         new AddActionExecutor(messageService, messageProvider).execute();
                         break;
                     case REMOVE:
-                        new RemoveActionExecutor(messageService, messageProvider).execute();
-                        break;
-                    case DISPLAY_ALL_MESSAGES:
-                        new ShowActionExecutor(messageService).execute();
-                        break;
-                    case FILTER:
-                        new FilterActionExecutor(messageService, filterMessage).execute();
+//                        new ActionExecutor(messageService, messageProvider).execute();
+//                        break;
+//                    case SHOW:
+//                        new ShowActionExecutor(messageService).execute();
+//                        break;
+//                    case FILTER:
+//                        new FilterActionExecutor(messageService, filterMessage).execute();
                         break;
                     case CLOSE:
                         break mainLoop;
@@ -79,20 +80,17 @@ public class ApplicationMain {
                         continue mainLoop;
                 }
             } else {
-                System.out.println("Wrong choice, try again!");
+                System.out.println("Wrong action.");
             }
         }
     }
 
-    private static class MessageProvider {
+    public static class MessageProvider {
+        public Message fetchMessageFromUser() {
+            return null;
+        }
+
     }
-
-    private static class FilterMessage {
-    }
-}
-
-
-
 
 
 }
