@@ -19,6 +19,15 @@ public class SimpleStorage implements Storage {
         return storage.remove(message);
     }
 
+    @Override
+    public void filterMessage(Message message) {
+
+    }
+
+    @Override
+    public void displayMessage(Message message) {
+
+    }
 
 
     public List<Message> getAll() {
