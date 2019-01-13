@@ -7,6 +7,8 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public class SimpleRepository {
+
+    // todo you should use interface as a type of field
     private final SimpleStorage simpleStorage;
 
     public SimpleRepository(final SimpleStorage simpleStorage) {
@@ -22,17 +24,18 @@ public class SimpleRepository {
     }
 
     public void filter(Message message) {
-        return simpleStorage.filter(message);
+        simpleStorage.filterMessage(message);
     }
 
     public void display(Message message) {
-        return simpleStorage.display(message);
+        simpleStorage.displayMessage(message);
     }
 
 
+    // todo please analyze what I did here
     List<Message> findByTitle(final Message message) {
         return simpleStorage.getAll().stream()
-                .filter(item -> item.getMessage() = messageAuthor)
+                .filter(item -> item.getTitle().equals(message.getTitle()))
                 .collect(toList());
     }
 }

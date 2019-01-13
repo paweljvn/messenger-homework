@@ -2,9 +2,7 @@ package dao;
 
 
 import model.Message;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +33,9 @@ public class SimpleRepositoryToMessageRepositoryAdapter implements MessageReposi
         simpleRepository.display(message);
     }
 
-
+    @Override
+    public List<Message> getAll() {
+        return null;
     }
 
     @Override
@@ -45,6 +45,10 @@ public class SimpleRepositoryToMessageRepositoryAdapter implements MessageReposi
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Message> findByAuthor(String author) {
+        return null;
+    }
 
 
 }
