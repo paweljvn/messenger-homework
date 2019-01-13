@@ -1,83 +1,95 @@
 package view;
 
-import dao.MessageRepository;
-import dao.SimpleRepository;
-import dao.SimpleRepositoryToMessageRepositoryAdapter;
 import dao.SimpleStorage;
-import sun.java2d.pipe.SpanShapeRenderer;
-
-
-import javax.swing.*;
-import java.awt.*;
+import service.MessageService;
 import java.util.Optional;
 import java.util.Scanner;
 
-import static view.ApplicationMain.Action.*;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 
 public class ApplicationMain {
     public final static String NULL = null;
 
     public enum Action {
-        ADD,
-        REMOVE,
-        DISPLAY_ALL_MESSAGES,
-        SEARCH_BY_TITLE,
-        SEARCH_BY_AUTHOR,
-        CLOSE,
+
+        ADD(1),
+        REMOVE(2),
+        SHOW(3),
+        FILTER(4),
+        CLOSE(5);
+
+        private final int actionIndex;
+
+        Action(final int actionIndex) {
+            this.actionIndex = actionIndex;
+        }
+
+        public static Optional<Action> fromActionIndex(int actionIndex) {
+            for (Action action : Action.values()) {
+                if (action.actionIndex == actionIndex) {
+                    return of(action);
+                }
+            }
+            return empty();
+        }
+
     }
 
-
     public static void main(String[] args) {
-
-
-        final SimpleRepository simpleRepository = new SimpleRepository(new SimpleStorage());
-        final MessageRepository messageRepository = new SimpleRepositoryToMessageRepositoryAdapter(simpleRepository);
-
+        final SimpleStorage simpleStorage = new SimpleStorage();
+        final MessageService messageService = new MessageService(simpleStorage);
+        final MessageProvider messageProvider = new MessageProvider();
+        final FilterMessage filterMessage = new FilterMessage();
 
         mainLoop:
         while (true) {
-            System.out.println("Choose the action:");
-            System.out.println("1: Add a message.");
-            System.out.println("2: Remove a message.");
-            System.out.println("3: Display all messages.");
-            System.out.println("4: Find by title.");
-            System.out.println("5: Find by author.");
-            System.out.println("6: Exit the application.");
+
+            System.out.println("Choose action:" + "\n" +
+                    "1: Add message" + "\n" +
+                    "2: Remove message" + "\n" +
+                    "3: Show message" + "\n" +
+                    "4: Filter of message" + "\n" +
+                    "5: Close application");
             System.out.println();
 
             Scanner scanner = new Scanner(System.in);
 
             final int selectedAction = scanner.nextInt();
-
+            final Optional<Action> action = Action.fromActionIndex(selectedAction);
 
             if (action.isPresent()) {
                 switch (action.get()) {
                     case ADD:
-                        //add a message
-
+                        new AddActionExecutor(messageService, messageProvider).execute();
+                        break;
                     case REMOVE:
-                        // remove a meesage
-
+                        new RemoveActionExecutor(messageService, messageProvider).execute();
+                        break;
                     case DISPLAY_ALL_MESSAGES:
-                        // display all...
-
-                    case SEARCH_BY_TITLE:
-                        // searching by title
-
-                    case SEARCH_BY_AUTHOR:
-                        // searching by author
-
+                        new ShowActionExecutor(messageService).execute();
+                        break;
+                    case FILTER:
+                        new FilterActionExecutor(messageService, filterMessage).execute();
+                        break;
                     case CLOSE:
                         break mainLoop;
-
                     default:
                         continue mainLoop;
                 }
             } else {
-                System.out.println("Incorrect type of action.");
+                System.out.println("Wrong choice, try again!");
             }
         }
     }
+
+    private static class MessageProvider {
+    }
+
+    private static class FilterMessage {
+    }
+}
 
 
 
